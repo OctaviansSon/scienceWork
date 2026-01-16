@@ -1,0 +1,21 @@
+query,true,ml,llm,hybrid
+SELECT * FROM users WHERE id = 1,SAFE,SAFE,SAFE,SAFE
+SELECT * FROM users WHERE id = 2,SAFE,SAFE,SAFE,SAFE
+SELECT username FROM users WHERE username = 'admin',SAFE,SAFE,VULNERABLE,VULNERABLE
+SELECT * FROM users LIMIT 1,SAFE,SAFE,SAFE,SAFE
+SELECT * FROM users WHERE username = 'user',SAFE,SAFE,SAFE,VULNERABLE
+SELECT * FROM users WHERE id = 1 OR 1=1,VULNERABLE,VULNERABLE,VULNERABLE,VULNERABLE
+SELECT * FROM users WHERE username = 'admin' --',VULNERABLE,SAFE,VULNERABLE,VULNERABLE
+SELECT * FROM users WHERE id = 1; DROP TABLE users;,VULNERABLE,SAFE,VULNERABLE,VULNERABLE
+SELECT * FROM users WHERE id = '1' OR '1'='1',VULNERABLE,VULNERABLE,VULNERABLE,VULNERABLE
+SELECT * FROM users WHERE username = '' OR ''='',VULNERABLE,SAFE,VULNERABLE,VULNERABLE
+collection.find({'username': 'admin'}),SAFE,SAFE,VULNERABLE,VULNERABLE
+collection.find({'username': 'user'}),SAFE,SAFE,VULNERABLE,VULNERABLE
+"collection.find({'username': 'admin'}, {'_id': 0})",SAFE,SAFE,VULNERABLE,VULNERABLE
+collection.find({}),SAFE,SAFE,SAFE,VULNERABLE
+collection.find({'username': 'guest'}),SAFE,SAFE,VULNERABLE,VULNERABLE
+collection.find({'username': {'$ne': null}}),VULNERABLE,VULNERABLE,VULNERABLE,VULNERABLE
+collection.find({'$where': 'this.password == this.password'}),VULNERABLE,SAFE,VULNERABLE,VULNERABLE
+collection.find({'username': {'$gt': ''}}),VULNERABLE,SAFE,VULNERABLE,VULNERABLE
+"collection.find({'$or': [{}, {}]})",VULNERABLE,VULNERABLE,VULNERABLE,VULNERABLE
+collection.find({'username': {'$regex': '.*'}}),VULNERABLE,SAFE,VULNERABLE,VULNERABLE

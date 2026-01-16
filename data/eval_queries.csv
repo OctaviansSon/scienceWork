@@ -1,0 +1,24 @@
+query,label,type
+"SELECT * FROM users WHERE id = 1",SAFE,SQL
+"SELECT * FROM users WHERE id = 2",SAFE,SQL
+"SELECT username FROM users WHERE username = 'admin'",SAFE,SQL
+"SELECT * FROM users LIMIT 1",SAFE,SQL
+"SELECT * FROM users WHERE username = 'user'",SAFE,SQL
+
+"SELECT * FROM users WHERE id = 1 OR 1=1",VULNERABLE,SQL
+"SELECT * FROM users WHERE username = 'admin' --'",VULNERABLE,SQL
+"SELECT * FROM users WHERE id = 1; DROP TABLE users;",VULNERABLE,SQL
+"SELECT * FROM users WHERE id = '1' OR '1'='1'",VULNERABLE,SQL
+"SELECT * FROM users WHERE username = '' OR ''=''",VULNERABLE,SQL
+
+"collection.find({'username': 'admin'})",SAFE,NoSQL
+"collection.find({'username': 'user'})",SAFE,NoSQL
+"collection.find({'username': 'admin'}, {'_id': 0})",SAFE,NoSQL
+"collection.find({})",SAFE,NoSQL
+"collection.find({'username': 'guest'})",SAFE,NoSQL
+
+"collection.find({'username': {'$ne': null}})",VULNERABLE,NoSQL
+"collection.find({'$where': 'this.password == this.password'})",VULNERABLE,NoSQL
+"collection.find({'username': {'$gt': ''}})",VULNERABLE,NoSQL
+"collection.find({'$or': [{}, {}]})",VULNERABLE,NoSQL
+"collection.find({'username': {'$regex': '.*'}})",VULNERABLE,NoSQL

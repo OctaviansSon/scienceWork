@@ -1,0 +1,27 @@
+python --version (3.9.13)
+
+python -m venv venv
+venv\Scripts\activate
+
+pip install scikit-learn pandas numpy nltk fastapi uvicorn requests pymongo psycopg2-binary
+
+https://ollama.com/
+ollama pull llama3
+ollama run llama3
+
+PostgreSQL:
+username: postgres
+password: <YOUR_PASSWORD>
+port: 5432
+
+CREATE DATABASE security_test;
+
+MongoDB:
+mongod --dbpath C:\mongodb\data\db
+
+START PROJECT:
+python ml/train.py
+uvicorn api.main:app --reload
+
+TEST:
+http://127.0.0.1:8000/docs
